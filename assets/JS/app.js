@@ -1,43 +1,26 @@
-let myData;
+let myData = [];
 let currentFrom = 0;
 let currentTo = 10;
+let button = document.querySelector("button");
 
+button.innerHTML = "Load More";
 window.onload = () => showData();
 
+async function getNewsDetails(id) {
+  const response = await fetch(
+    ` https://hacker-news.firebaseio.com/v0/item/${id}.json`
+  );
+  return await response.json();
+}
+
 async function showData() {
+  button.innerHTML = "Loading...";
   try {
     await fetchData(currentFrom, currentTo);
-    await getNewsDetails();
-
-    function createElement(tagName, textContent, className) {
-      const newElement = document.createElement(tagName);
-      newElement.textContent = textContent;
-      newElement.classList.add(className);
-      if (tagName === "div") {
-        button.insertAdjacentElement("beforebegin", newElement);
-      }
-      return newElement;
-    }
-
-    for (const object of newsDetails) {
-      let position = newsDetails.indexOf(object);
-
-      let title = newsDetails[position]["title"];
-      let linkNew = newsDetails[position]["url"];
-      
-      // MANCA DA AGIGUNGERE LA DATA
-
-      // Inizio a modificare il DOM
-
-      let div = createElement("div", title, "news-block");
-      let a = createElement("p", linkNew, "url");
-      a.addEventListener("click", function(){
-        window.open(linkNew, '_blank')
-      });
-      div.appendChild(a);
-    }
   } catch (error) {
     console.error("An error occurred while adding:", error);
+  } finally {
+    button.innerHTML = "Load More";
   }
 }
 
@@ -53,44 +36,47 @@ async function fetchData(currentFrom, currentTo) {
       throw new Error("HTTP request error, status " + response.status);
     }
 
-    if (currentFrom > 490 || currentTo == 500) {
-      console.log("There is no further news");
-      return myData;
-    }
+    // if (currentFrom > 490 || currentTo == 500) {
+    //   console.log("There is no further news");
+    //   return myData;
+    // }
     const data = await response.json();
-    myData = data.slice(currentFrom, currentTo);
-    return myData;
+    let fetchedIds = data.slice(currentFrom, currentTo);
+    for (let currentId of fetchedIds) {
+      let currentNew = await getNewsDetails(currentId);
+      printOnDOM(currentNew);
+    }
   } catch (error) {
     console.error("An error occurred while fetching the data:", error);
   }
 }
 
-// Dagli ID devo estrarre titolo, link e data della news
-
-const newsDetails = [];
-
-async function getNewsDetails() {
-  try {
-    for (let id of myData) {
-      const response = await fetch(
-        ` https://hacker-news.firebaseio.com/v0/item/${id}.json`
-      );
-      let newsItem = await response.json();
-      if (newsItem) {
-        newsDetails.push(newsItem);
-      }
-    }
-    return newsDetails;
-  } catch (error) {
-    console.error("An error occurred while fetching the data:", error);
-  }
+function printOnDOM(currentNew) {
+  document.getElementById("content").insertAdjacentHTML(
+    "beforeend",
+    `
+        <div class="card">
+            <div class="card-body"> 
+            <h5 class="card-title">
+            ${currentNew.title} -
+            <a href="${currentNew.url}" target="_blank">Read more</a>
+            </h5>
+            <p class="card-text">
+                ${new Date(currentNew.time).toLocaleDateString("it-IT", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                })}
+            </p>
+        </div>
+    </div>`
+  );
 }
 
 // Incremento dei dati ad ogni click
 
-let button = document.querySelector("button");
 button.addEventListener("click", async function () {
-  currentFrom += 10;
+  currentFrom = currentTo;
   currentTo += 10;
   await showData();
 });
