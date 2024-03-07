@@ -1,8 +1,3 @@
-@media only screen and (min-width: 1440px) {
-  body .news-block {
-    width: 65%;
-  }
-}
 body {
   margin: 0;
   padding: 0;
@@ -18,25 +13,35 @@ body #title {
   text-align: center;
   font-style: italic;
 }
-body .news-block {
+body .card {
   height: auto;
-  width: 80%;
-  padding: 15px;
-  margin: 5px;
+  margin: 10px;
+  padding: 5px;
   border: 1px solid black;
-  font-size: 25px;
-  text-align: center;
-  font-family: "Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif";
 }
-body .url {
-  cursor: pointer;
-  margin-top: 5PX;
+body .card .card-body {
+  text-align: center;
+}
+body .card .card-body .card-title {
+  font-family: "Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif";
+  margin-bottom: 5px;
+}
+body .card .card-body .card-title span{
+  font-size: 25px;
+}
+body .card .card-body .card-title a {
   font-size: 15px;
+  text-decoration: none;
+  color: grey;
   text-decoration: underline;
-  color: rgb(0, 0, 59);
+}
+body .card .card-body .card-text {
+  margin-top: 5px;
+  font-size: 14px;
 }
 body button {
   margin-top: 20px;
+  margin-bottom: 30px;
   padding: 5px;
   border-radius: 5px;
   color: white;
@@ -45,7 +50,4 @@ body button {
   font-size: 20px;
   font-style: italic;
   cursor: pointer;
-}
-body button :hover {
-  background-color: rgb(146, 146, 146);
 }/*# sourceMappingURL=style.css.map */

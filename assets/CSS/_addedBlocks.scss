@@ -1,0 +1,30 @@
+body {
+  .card {
+    height: auto;
+    margin: 10px;
+    padding: 5px;
+    border: 1px solid black;
+
+    .card-body {
+      text-align: center;
+
+      .card-title {
+        font-family: $font-family;
+        margin-bottom: 5px;
+
+        span {
+          font-size: 25px;
+        }
+        a {
+          font-size: 5px;
+          color: grey;
+        }
+      }
+
+      .card-text {
+        margin-top: 5px;
+        font-size: 14px;
+      }
+    }
+  }
+}

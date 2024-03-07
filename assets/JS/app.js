@@ -36,10 +36,6 @@ async function fetchData(currentFrom, currentTo) {
       throw new Error("HTTP request error, status " + response.status);
     }
 
-    // if (currentFrom > 490 || currentTo == 500) {
-    //   console.log("There is no further news");
-    //   return myData;
-    // }
     const data = await response.json();
     let fetchedIds = data.slice(currentFrom, currentTo);
     for (let currentId of fetchedIds) {
@@ -55,18 +51,18 @@ function printOnDOM(currentNew) {
   document.getElementById("content").insertAdjacentHTML(
     "beforeend",
     `
-        <div class="card">
-            <div class="card-body"> 
+    <div class="card">
+        <div class="card-body"> 
             <h5 class="card-title">
-            ${currentNew.title} -
-            <a href="${currentNew.url}" target="_blank">Read more</a>
+            <span class="text-title">${currentNew.title} </span> - 
+            <a id="read-more" href="${currentNew.url}" target="_blank"> Read more</a>
             </h5>
-            <p class="card-text">
+            <p class="card-text"> (Published: 
                 ${new Date(currentNew.time).toLocaleDateString("it-IT", {
                   year: "numeric",
                   month: "2-digit",
                   day: "2-digit",
-                })}
+                })})
             </p>
         </div>
     </div>`
